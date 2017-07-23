@@ -1,7 +1,5 @@
 package tablePlayers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -35,30 +33,23 @@ public class Main {
 		}
 		return numberOfPlayers;
 	}
+	
+	
 
-	private static boolean checkName(String namePl, List<Player> playerList) {
-		for (int i = 0; i < playerList.size(); i++) {
-			if (namePl.equals(((Player) playerList.get(i)).getPlayerName())) {
-				return false;
-			}
-		}
-		return true;
-	}
 
-	private static List<Player> createPlayersList(int numberOfPlayers) {
-		List<Player> playersList = new ArrayList<Player>();
-		while (playersList.size() < numberOfPlayers) {
-			System.out.println("Podaj imię " + (playersList.size() + 1)
+
+	private static void createPlayersList(Table table, int numberOfPlayers) {
+		while (table.getNumberOfPlayers() < numberOfPlayers) {
+			System.out.println("Podaj imię " + (table.getNumberOfPlayers() + 1)
 					+ " gracza.");
 			String namePl = sc.next();
-			if (!checkName(namePl, playersList)) {
+			if (!table.checkName(namePl)) {
 				System.out.println("Masz już tego gracza.");
 			} else {
 				Player player = new Player(namePl);
-				playersList.add(player);
+				table.addPlayer(player);
 			}
 		}
-		return playersList;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -68,14 +59,15 @@ public class Main {
 		System.out.println("Podaj liczbę graczy.");
 
 		int numberOfPlayers = readNumberOfPlayers();
+		Table table = new Table(nameTable);
+		
+		createPlayersList(table, numberOfPlayers);
 
-		List<Player> playersList = createPlayersList(numberOfPlayers);
-
-		Table table = new Table(nameTable, playersList);
+		
 
 		System.out.println("Utworzono stolik o nazwie: " + table.getNameTable()
 				+ ", ID nr: " + table.getUniqueID() + ", liczba graczy "
-				+ playersList.size() + "."
+				+ table.getNumberOfPlayers() + "."
 				+ "\n Dane zapisano do pliku pod nazwą records.txt.");
 
 		table.recordToFile(args[0]);

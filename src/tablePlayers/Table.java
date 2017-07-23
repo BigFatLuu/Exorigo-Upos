@@ -3,6 +3,7 @@ package tablePlayers;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -11,10 +12,10 @@ public class Table {
 	private final List<Player> playersList;
 	private final UUID uniqueID;
 
-	public Table(String nameTable, List<Player> playersList) {
+	public Table(String nameTable) {
 		super();
 		this.nameTable = nameTable;
-		this.playersList = playersList;
+		this.playersList = new ArrayList<Player>();
 		uniqueID = UUID.randomUUID();
 	}
 
@@ -26,12 +27,20 @@ public class Table {
 		return playersList.size();
 	}
 
-	public List<Player> getPlayersList() {
-		return playersList;
+	public void addPlayer(Player p) {
+		playersList.add(p);
 	}
-
 	public UUID getUniqueID() {
-		return uniqueID;
+		return new UUID(uniqueID.getMostSignificantBits(), uniqueID.getLeastSignificantBits());
+	}
+	
+	public boolean checkName(String namePl) {
+		for (int i = 0; i < playersList.size(); i++) {
+			if (namePl.equals(((Player) playersList.get(i)).getPlayerName())) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 
